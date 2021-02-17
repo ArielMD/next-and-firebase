@@ -10,7 +10,7 @@ const Login: React.FC = () => {
   const { register, handleSubmit, errors } = useForm<IFormLogin>();
 
   const onSubmit = (data: IFormLogin) => {
-    console.log(data);
+    const { user, password } = data;
   };
 
   return (
@@ -37,6 +37,7 @@ const Login: React.FC = () => {
           <input
             type="password"
             name="password"
+            autoComplete="on"
             ref={register({ required: "El campo es requerido" })}
           />
           {errors.password && (

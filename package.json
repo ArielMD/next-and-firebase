@@ -8,12 +8,14 @@
     "start": "next start"
   },
   "dependencies": {
+    "firebase": "^8.2.7",
     "next": "10.0.7",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-hook-form": "^6.15.1"
   },
   "devDependencies": {
+    "@firebase/app-types": "^0.6.1",
     "@types/node": "^14.14.28",
     "@types/react": "^17.0.2",
     "typescript": "^4.1.5"
