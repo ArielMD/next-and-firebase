@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Layout from "../components/Layout";
+import firebase from "../firebase";
 
 interface IFormLogin {
   user: String;
@@ -8,9 +10,18 @@ interface IFormLogin {
 
 const Login: React.FC = () => {
   const { register, handleSubmit, errors } = useForm<IFormLogin>();
+  const [errorFirebase, setErrorFirebase] = useState<string | null>(null);
 
   const onSubmit = (data: IFormLogin) => {
     const { user, password } = data;
+    try {
+      firebase.login(user as string, password as string);
+    } catch (error) {
+      setErrorFirebase(error.message);
+      setTimeout(function () {
+        setErrorFirebase(null);
+      }, 2000);
+    }
   };
 
   return (
@@ -43,6 +54,7 @@ const Login: React.FC = () => {
           {errors.password && (
             <small>{(errors.password as any)?.message}</small>
           )}
+          {errorFirebase ? <span> {errorFirebase}</span> : null}
         </div>
         <button>Entrar</button>
       </form>
