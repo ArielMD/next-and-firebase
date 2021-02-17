@@ -4,19 +4,24 @@ import Layout from "../components/Layout";
 import context from "../firebase/context";
 
 interface IFormLogin {
-  user: String;
+  name: String;
+  email: String;
   password: String;
 }
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
   const { register, handleSubmit, errors } = useForm<IFormLogin>();
   const [errorFirebase, setErrorFirebase] = useState<string | null>(null);
   const { firebase } = useContext(context);
 
   const onSubmit = async (data: IFormLogin) => {
-    const { user, password } = data;
+    const { name, email, password } = data;
     try {
-      await firebase.login(user as string, password as string);
+      await firebase.registerUser(
+        name as string,
+        email as string,
+        password as string
+      );
     } catch (error) {
       setErrorFirebase(error.message);
       setTimeout(function () {
@@ -26,25 +31,41 @@ const Login: React.FC = () => {
   };
 
   const emailRegex: RegExp = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+  const textRegex: RegExp = /^[A-Za-z]+$/i;
 
   return (
     <Layout title="Login">
-      <h1>LOGIN</h1>
+      <h1>REGISTER</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <label htmlFor="">Usuario</label>
+          <label htmlFor="">Nombre de usuario</label>
           <input
             type="text"
-            name="user"
+            name="name"
             ref={register({
               required: "El campo es requerido",
               pattern: {
-                value: emailRegex,
+                value: textRegex,
                 message: "El campo no puede contener numeros",
               },
             })}
           />
-          {errors.user && <small>{(errors.user as any)?.message}</small>}
+          {errors.name && <small>{(errors.name as any)?.message}</small>}
+        </div>
+        <div>
+          <label htmlFor="">Email</label>
+          <input
+            type="text"
+            name="email"
+            ref={register({
+              required: "El campo es requerido",
+              pattern: {
+                value: emailRegex,
+                message: "Debes ingresar un correo valido",
+              },
+            })}
+          />
+          {errors.email && <small>{(errors.email as any)?.message}</small>}
         </div>
         <div>
           <label htmlFor="">Contraseña</label>
@@ -65,4 +86,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Register;
