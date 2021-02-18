@@ -27,6 +27,12 @@ class Firebase {
   async login(email: string, password: string) {
     return this.auth.signInWithEmailAndPassword(email, password);
   }
+
+  async logout() {
+    return this.auth.signOut();
+  }
 }
+
+export { Firebase };
 
 export default new Firebase();

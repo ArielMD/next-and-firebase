@@ -5,6 +5,7 @@ import firebase, { FirebaseContext } from "../firebase";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [currentUser, setCurrentUser] = useState(null);
+  const [isLoading, setIsLoading] = useState<Boolean>(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -12,6 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       if (user) {
         setCurrentUser(user);
         router.push("/home");
+        setIsLoading(false);
       } else {
         setCurrentUser(null);
         router.push("/");
@@ -25,6 +27,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       value={{
         firebase,
         currentUser,
+        isLoading,
       }}
     >
       <Component {...pageProps} />
